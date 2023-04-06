@@ -1,0 +1,42 @@
+---
+- name: install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: copy nginx configuration
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify: restart nginx
+
+- name: ensure nginx service is enabled and running
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: check nginx status
+  systemd:
+    name: nginx
+    state: started
+  register: nginx_status
+
+- name: debug nginx status
+  debug:
+    var: nginx_status
+
+- name: enable nginx in firewall
+  firewalld:
+    service: nginx
+    permanent: yes
+    state: enabled
+
+- name: reload firewall
+  firewalld:
+    reload: yes
+
+- name: restart nginx
+  systemd:
+    name: nginx
+    state: restarted

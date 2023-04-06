@@ -1,0 +1,11 @@
+---
+- name: Get OS version
+  shell: cat /etc/os-release | grep -w VERSION_ID | cut -d= -f2 | tr -d '"'
+  register: os_version
+
+- name: Get OS architecture
+  shell: uname -m
+  register: os_architecture
+
+
+

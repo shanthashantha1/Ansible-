@@ -1,0 +1,16 @@
+---
+- name: install Python3.1, get OS version, get OS architecture, install nginx and restart Nginx
+  hosts: all
+  become: true
+  roles:
+    - python-role
+    - os-role
+    - nginx-role
+  tasks:
+    - name: copy nginx configuration
+      copy:
+        remote_src: yes
+        src: /etc/nginx/nginx.conf
+        dest: /etc/nginx/nginx.conf
+      notify: restart nginx
+
